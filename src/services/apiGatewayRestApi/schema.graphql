@@ -1,0 +1,21 @@
+type awsApiGatewayEndpointConfiguration {
+  id: ID
+  types: [String] @search(by: [hash])
+  vpcEndpointIds: [String] @search(by: [hash])
+}
+
+type awsApiGatewayRestApi implements awsBaseService @key(fields: "arn") {
+  description: String @search(by: [hash, regexp, fulltext])
+  rawPolicy: String @search(by: [hash, regexp])
+  policy: awsIamJSONPolicy
+  endpointConfiguration: awsApiGatewayEndpointConfiguration
+  apiKeySource: String @search(by: [hash])
+  createdDate: String @search(by: [hash])
+  minimumCompressionSize: Int @search
+  tags: [awsRawTag]
+  binaryMediaTypes: [String] @search(by: [hash, regexp])
+  stages: [awsApiGatewayStage] @hasInverse(field: restApi)
+  resources: [awsApiGatewayResource] @hasInverse(field: restApi)
+  route53Record: [awsRoute53Record] @hasInverse(field: restApi) #change to plural
+  domainNames: [awsApiGatewayDomainName] @hasInverse(field: restApis)
+}

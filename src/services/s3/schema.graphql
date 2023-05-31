@@ -1,0 +1,118 @@
+type awsBucketPolicy
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id
+  policy: awsIamJSONPolicy
+}
+
+type awsS3FilterRule
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id @search(by: [hash])
+  name: String @search(by: [hash])
+  value: String @search(by: [hash])
+}
+
+interface awsS3ConfigurationBase
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id
+  events: [String] @search(by: [hash])
+  filterRules: [awsS3FilterRule]
+}
+
+type awsS3TopicConfiguration implements awsS3ConfigurationBase {
+  topicArn: String @search(by: [hash])
+}
+
+type awsS3QueueConfiguration implements awsS3ConfigurationBase {
+  queueArn: String @search(by: [hash])
+}
+
+type awsS3LambdaFunctionConfiguration implements awsS3ConfigurationBase {
+  lambdaFunctionArn: String @search(by: [hash])
+}
+
+type awsS3NotificationConfiguration
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  topicConfigurations: [awsS3TopicConfiguration]
+  queueConfigurations: [awsS3QueueConfiguration]
+  lambdaFunctionConfigurations: [awsS3LambdaFunctionConfiguration]
+}
+
+type awsS3AclGrant
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id
+  granteeType: String @search(by: [hash])
+  granteeUri: String @search(by: [hash])
+  permission: String @search(by: [hash])
+}
+
+type awsS3ServerSideEncryptionConfiguration
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id
+  sseAlgorithm: String @search(by: [hash])
+  kmsMasterKeyID: String @search(by: [hash])
+}
+
+type awsS3 implements awsBaseService @key(fields: "arn") {
+  access: String @search(by: [hash, regexp])
+  bucketOwnerName: String @search(by: [hash, regexp])
+  requesterPays: String @search(by: [hash, regexp])
+  size: String @search(by: [hash, regexp])
+  accountLevelBlockPublicAcls: String @search(by: [hash, regexp])
+  accountLevelIgnorePublicAcls: String @search(by: [hash, regexp])
+  accountLevelBlockPublicPolicy: String @search(by: [hash, regexp])
+  accountLevelRestrictPublicBuckets: String @search(by: [hash, regexp])
+  totalNumberOfObjectsInBucket: String @search(by: [hash, regexp])
+  transferAcceleration: String @search(by: [hash, regexp])
+  corsConfiguration: String @search(by: [hash, regexp])
+  encrypted: String @search(by: [hash, regexp])
+  encryptionRules: [awsS3ServerSideEncryptionConfiguration]
+  lifecycle: String @search(by: [hash, regexp])
+  logging: String @search(by: [hash, regexp])
+  blockPublicAcls: String @search(by: [hash, regexp])
+  ignorePublicAcls: String @search(by: [hash, regexp])
+  blockPublicPolicy: String @search(by: [hash, regexp])
+  restrictPublicBuckets: String @search(by: [hash, regexp])
+  crossRegionReplication: String @search(by: [hash, regexp])
+  mfa: String @search(by: [hash, regexp])
+  versioning: String @search(by: [hash, regexp])
+  staticWebsiteHosting: String @search(by: [hash, regexp])
+  notificationConfiguration: awsS3NotificationConfiguration
+  policy: awsIamJSONPolicy
+  rawPolicy: String @search(by: [hash, regexp])
+  aclGrants: [awsS3AclGrant]
+  kinesisFirehose: [awsKinesisFirehose] @hasInverse(field: s3)
+  tags: [awsRawTag]
+  cloudfrontDistributions: [awsCloudfront] @hasInverse(field: s3)
+  cloudtrails: [awsCloudtrail] @hasInverse(field: s3)
+  managedAirflows: [awsManagedAirflow] @hasInverse(field: s3)
+  iamRole: [awsIamRole] @hasInverse(field: s3)
+  lambdas: [awsLambda] @hasInverse(field: s3)
+  sns: [awsSns] @hasInverse(field: s3)
+  sqs: [awsSqs] @hasInverse(field: s3)
+  ecsCluster: [awsEcsCluster] @hasInverse(field: s3)
+  kms: [awsKms] @hasInverse(field: s3)
+}

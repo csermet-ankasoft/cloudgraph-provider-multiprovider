@@ -1,0 +1,102 @@
+type awsCloudfront implements awsBaseService @key(fields: "id") {
+  etag: String @search(by: [hash, regexp])
+  status: String @search(by: [hash])
+  enabled: String @search(by: [hash])
+  priceClass: String @search(by: [hash, regexp])
+  domainName: String @search(by: [hash, regexp])
+  httpVersion: String @search(by: [hash, regexp])
+  lastModified: String @search(by: [hash, regexp])
+  callerReference: String @search(by: [hash, regexp])
+  ipv6Enabled: String @search(by: [hash])
+  defaultRootObject: String @search(by: [hash])
+  webAclId: String @search(by: [hash])
+  geoRestriction: awsCloudfrontGeoRestriction
+  customErrorResponses: [awsCloudfrontCustomErrorResponse]
+  defaultCacheBehavior: awsCloudfrontCacheBehavior
+  orderedCacheBehaviors: [awsCloudfrontCacheBehavior]
+  viewerCertificate: awsCloudfrontViewerCertificate
+  origins: [awsCloudfrontOriginData]
+  logging: awsCloudfrontLoggingConfig
+  elb: [awsElb] @hasInverse(field: cloudfrontDistribution)
+  s3: [awsS3] @hasInverse(field: cloudfrontDistributions)
+  tags: [awsRawTag]
+  webAcl: [awsWafV2WebAcl] @hasInverse(field: cloudfront)
+  cloudwatch: [awsCloudwatch] @hasInverse(field: cloudfront)
+}
+
+type awsCloudfrontOriginData {
+  id: String! @id @search(by: [hash])
+  customHeaders: [awsCloudfrontOriginCustomHeader]
+  customOriginConfig: awsCloudfrontCustomOriginConfig
+  domainName: String @search(by: [hash, regexp])
+  originId: String! @search(by: [hash])
+  originPath: String @search(by: [hash, regexp])
+}
+
+type awsCloudfrontOriginSslProtocols {
+  quantity: Int @search
+  items: [String] @search(by: [hash, regexp])
+}
+
+type awsCloudfrontCustomOriginConfig {
+  httpPort: Int @search
+  httpsPort: Int @search
+  originProtocolPolicy: String
+  originSslProtocols: awsCloudfrontOriginSslProtocols
+  originReadTimeout: Int @search
+  originKeepaliveTimeout: Int @search
+}
+
+type awsCloudfrontOriginCustomHeader {
+  id: String! @id @search(by: [hash])
+  name: String @search(by: [hash, regexp])
+  value: String @search(by: [hash, regexp])
+}
+
+type awsCloudfrontforwardedValues {
+  headers: [String] @search(by: [hash, regexp])
+  queryString: String @search(by: [hash, regexp])
+}
+
+type awsCloudfrontViewerCertificate {
+  acmCertificateArn: String @search(by: [hash])
+  cloudfrontDefaultCertificate: String @search(by: [hash])
+  iamCertificateId: String @search(by: [hash])
+  minimumProtocolVersion: String @search(by: [hash])
+  sslSupportMethod: String @search(by: [hash])
+}
+
+type awsCloudfrontCacheBehavior {
+  id: String! @id @search(by: [hash])
+  allowedMethods: [String] @search(by: [hash])
+  cachedMethods: [String] @search(by: [hash])
+  compress: String @search(by: [hash])
+  defaultTtl: String @search(by: [hash])
+  forwardedValues: awsCloudfrontforwardedValues
+  maxTtl: String @search(by: [hash])
+  minTtl: String @search(by: [hash])
+  patternPath: String @search(by: [hash])
+  smoothStreaming: String @search(by: [hash])
+  targetOriginId: String @search(by: [hash])
+  viewerProtocolPolicy: String @search(by: [hash])
+}
+
+type awsCloudfrontCustomErrorResponse {
+  id: String! @id @search(by: [hash])
+  errorCachingMinTtl: String @search(by: [hash])
+  errorCode: Int @search
+  responseCode: String @search(by: [hash, regexp])
+  responsePagePath: String @search(by: [hash, regexp])
+}
+
+type awsCloudfrontLoggingConfig {
+  enabled: Boolean @search
+  includeCookies: Boolean @search
+  bucket: String @search(by: [hash, regexp])
+  prefix: String @search(by: [hash, regexp])
+}
+
+type awsCloudfrontGeoRestriction {
+  restrictionType: String @search(by: [hash, regexp])
+  locations: [String] @search(by: [hash, regexp])
+}

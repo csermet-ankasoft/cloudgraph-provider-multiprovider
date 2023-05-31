@@ -1,0 +1,31 @@
+type awsBilling implements awsOptionalService @key(fields: "id") {
+  totalCostMonthToDate: awsTotalBillingInfo
+  totalCostLast30Days: awsTotalBillingInfo
+  monthToDateDailyAverage: [awsServiceBillingInfo]
+  last30DaysDailyAverage: [awsServiceBillingInfo]
+  monthToDate: [awsServiceBillingInfo]
+  last30Days: [awsServiceBillingInfo]
+}
+
+type awsServiceBillingInfo
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  name: String! @search(by: [hash])
+  cost: Float @search
+  currency: String @search(by: [hash, regexp])
+  formattedCost: String @search(by: [hash, regexp])
+}
+
+type awsTotalBillingInfo
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  cost: Float @search
+  currency: String @search(by: [hash, regexp])
+  formattedCost: String @search(by: [hash, regexp])
+}

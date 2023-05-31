@@ -1,0 +1,44 @@
+type awsIamUser implements awsOptionalService @key(fields: "id") {
+  path: String @search(by: [hash, regexp])
+  name: String @search(by: [hash, regexp])
+  creationTime: String @search(by: [hash, regexp])
+  passwordLastUsed: String @search(by: [hash, regexp])
+  passwordLastChanged: String @search(by: [hash, regexp])
+  passwordNextRotation: String @search(by: [hash, regexp])
+  passwordEnabled: Boolean @search
+  mfaActive: Boolean @search
+  accessKeysActive: Boolean @search
+  accessKeyData: [awsIamAccessKey]
+  mfaDevices: [awsIamMfaDevice]
+  virtualMfaDevices: [awsIamMfaDevice]
+  groups: [String]
+  tags: [awsRawTag]
+  inlinePolicies: [String]
+  iamAttachedPolicies: [awsIamPolicy] @hasInverse(field: iamUsers)
+  iamGroups: [awsIamGroup] @hasInverse(field: iamUsers)
+}
+
+type awsIamAccessKey
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  accessKeyId: String! @id @search(by: [hash, regexp])
+  lastUsedDate: String @search(by: [hash, regexp])
+  lastUsedRegion: String @search(by: [hash, regexp])
+  lastUsedService: String @search(by: [hash, regexp])
+  createDate: String @search(by: [hash, regexp])
+  lastRotated: String @search(by: [hash, regexp])
+  status: String @search(by: [hash, regexp])
+}
+
+type awsIamMfaDevice
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  serialNumber: String! @id @search(by: [hash, regexp])
+  enableDate: String @search(by: [hash, regexp])
+}

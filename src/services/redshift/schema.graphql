@@ -1,0 +1,24 @@
+type awsRedshiftCluster implements awsBaseService @key(fields: "arn") {
+  allowVersionUpgrade: Boolean @search
+  automatedSnapshotRetentionPeriod: Int @search
+  availabilityZone: String @search(by: [hash, regexp])
+  clusterAvailabilityStatus: String @search(by: [hash, regexp])
+  clusterCreateTime: String @search(by: [hash, regexp])
+  clusterRevisionNumber: String @search(by: [hash, regexp])
+  clusterStatus: String @search(by: [hash, regexp])
+  clusterSubnetGroupName: String @search(by: [hash, regexp])
+  clusterVersion: String @search(by: [hash, regexp])
+  dBName: String @search(by: [hash, regexp])
+  encrypted: Boolean @search
+  enhancedVpcRouting: Boolean @search
+  manualSnapshotRetentionPeriod: Int @search
+  masterUsername: String @search(by: [hash, regexp])
+  modifyStatus: String @search(by: [hash, regexp])
+  nodeType: String @search(by: [hash, regexp])
+  numberOfNodes: Int @search
+  preferredMaintenanceWindow: String @search(by: [hash, regexp])
+  publiclyAccessible: Boolean @search
+  tags: [awsRawTag]
+  kms: [awsKms] @hasInverse(field: redshiftCluster)
+  vpc: [awsVpc] @hasInverse(field: redshiftClusters)
+}

@@ -1,0 +1,37 @@
+type awsAccessLogSettings
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: ID #TODO: update to use String! @id to avoid duplicates
+  format: String @search(by: [hash])
+  destinationArn: String @search(by: [hash, regexp])
+}
+
+type awsApiGatewayStageVariable
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id @search(by: [hash])
+  key: String! @search(by: [hash])
+  value: String @search(by: [hash])
+}
+
+type awsApiGatewayStage implements awsBaseService @key(fields: "arn") {
+  name: String @search(by: [hash, regexp])
+  description: String @search(by: [hash, regexp, fulltext])
+  cacheCluster: Boolean @search
+  cacheClusterSize: String @search(by: [hash])
+  accessLogSettings: awsAccessLogSettings
+  documentationVersion: String @search(by: [hash, regexp])
+  clientCertificateId: String @search(by: [hash])
+  xrayTracing: Boolean @search
+  restApiId: String @search(by: [hash, regexp])
+  variables: [awsApiGatewayStageVariable]
+  tags: [awsRawTag]
+  restApi: [awsApiGatewayRestApi] @hasInverse(field: stages)
+  webAcl: [awsWafV2WebAcl] @hasInverse(field: apiGatewayStages)
+}

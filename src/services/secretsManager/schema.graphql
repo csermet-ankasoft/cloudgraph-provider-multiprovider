@@ -1,0 +1,42 @@
+type awsSecretsManagerReplicationStatus
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id
+  region: String @search(by: [hash, regexp])
+  kmsKeyId: String @search(by: [hash, regexp])
+  status: String @search(by: [hash, regexp])
+  statusMessage: String @search(by: [hash, regexp])
+  lastAccessedDate: DateTime @search(by: [day])
+}
+
+type awsSecretsManagerRotationRule
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id
+  automaticallyAfterDays: Int @search
+}
+
+type awsSecretsManager implements awsBaseService @key(fields: "arn") {
+  name: String @search(by: [hash, regexp])
+  description: String @search(by: [hash, regexp])
+  kmsKeyId: String @search(by: [hash])
+  tags: [awsRawTag]
+  rotationEnabled: Boolean @search
+  rotationLambdaARN: String @search(by: [hash, regexp])
+  rotationRules: awsSecretsManagerRotationRule
+  lastRotatedDate: DateTime @search(by: [day])
+  lastChangedDate: DateTime @search(by: [day])
+  lastAccessedDate: DateTime @search(by: [day])
+  deletedDate: DateTime @search(by: [day])
+  createdDate: DateTime @search(by: [day])
+  owningService: String @search(by: [hash, regexp])
+  replicationStatus: [awsSecretsManagerReplicationStatus]
+  kms: [awsKms] @hasInverse(field: secretsManager)
+  lambda: [awsLambda] @hasInverse(field: secretsManager)
+}

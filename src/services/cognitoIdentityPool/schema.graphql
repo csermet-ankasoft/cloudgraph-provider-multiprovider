@@ -1,0 +1,41 @@
+type awsSupportedLoginProvider
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+    identityProviderId: String! @id @search(by: [hash, regexp])
+    identityProvider: String @search(by: [hash, regexp])
+  }
+
+type awsCognitoIdentityProviders
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+    id: String! @id
+    providerName: String @search(by: [hash, regexp])
+    clientId: String @search(by: [hash, regexp])
+    serverSideTokenCheck: String @search(by: [hash, regexp])
+  }
+
+type awsCognitoIdentityPool @key(fields: "id") {
+  id: String! @id @search(by: [hash])
+  arn: String! @search(by: [hash])
+  accountId: String! @search(by: [hash])
+  region: String @search(by: [hash, regexp])
+  identityPoolName: String @search(by: [hash, regexp])
+  allowUnauthenticatedIdentities: String @search(by: [hash, regexp])
+  allowClassicFlow: String @search(by: [hash, regexp])
+  supportedLoginProviders: [awsSupportedLoginProvider]
+  developerProviderName: String @search(by: [hash, regexp])
+  openIdConnectProviderARNs: [String] @search
+  cognitoIdentityProviders: [awsCognitoIdentityProviders]
+  samlProviderARNs: [String] @search
+  tags: [awsRawTag]
+  elasticSearchDomains: [awsElasticSearchDomain] @hasInverse(field: cognitoIdentityPool)
+  iamRoles: [awsIamRole] @hasInverse(field: awsCognitoIdentityPool)
+  iamOpenIdConnectProviders: [awsIamOpenIdConnectProvider] @hasInverse(field: awsCognitoIdentityPool)
+  iamSamlProviders: [awsIamSamlProvider] @hasInverse(field: awsCognitoIdentityPool)
+}

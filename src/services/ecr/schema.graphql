@@ -1,0 +1,21 @@
+type awsEcr implements awsBaseService @key(fields: "arn") {
+  createdAt: String @search(by: [hash, regexp])
+  encryptionConfig: awsEcrEncryptionConfiguration
+  imageScanOnPush: Boolean @search
+  imageTagMutability: String @search(by: [hash, regexp])
+  name: String @search(by: [hash, regexp])
+  registryAccountId: String @search(by: [hash, regexp])
+  repositoryUri: String @search(by: [hash, regexp])
+  scanOnPush: Boolean @search
+  tags: [awsRawTag]
+}
+
+type awsEcrEncryptionConfiguration
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  type: String @search(by: [hash, regexp])
+  kmsKey: String @search(by: [hash, regexp])
+}

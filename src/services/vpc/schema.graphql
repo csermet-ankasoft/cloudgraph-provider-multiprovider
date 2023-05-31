@@ -1,0 +1,37 @@
+type awsVpc implements awsBaseService @key(fields: "id") {
+  defaultVpc: Boolean @search
+  dhcpOptionsSet: String @search(by: [hash, regexp])
+  enableDnsHostnames: Boolean @search
+  enableDnsSupport: Boolean @search
+  instanceTenancy: String @search(by: [hash, regexp])
+  ipV4Cidr: String @search(by: [hash, regexp])
+  ipV6Cidr: String @search(by: [hash, regexp])
+  state: String @search(by: [hash, regexp])
+  tags: [awsRawTag]
+  albs: [awsAlb] @hasInverse(field: vpc)
+  eips: [awsEip] @hasInverse(field: vpc)
+  elbs: [awsElb] @hasInverse(field: vpc)
+  igws: [awsIgw] @hasInverse(field: vpc)
+  lambdas: [awsLambda] @hasInverse(field: vpc)
+  nacls: [awsNetworkAcl] @hasInverse(field: vpc)
+  natGateways: [awsNatGateway] @hasInverse(field: vpc)
+  networkInterfaces: [awsNetworkInterface] @hasInverse(field: vpc)
+  rdsDbInstances: [awsRdsDbInstance] @hasInverse(field: vpc)
+  redshiftClusters: [awsRedshiftCluster] @hasInverse(field: vpc)
+  route53HostedZones: [awsRoute53HostedZone] @hasInverse(field: vpc)
+  routeTables: [awsRouteTable] @hasInverse(field: vpc)
+  subnets: [awsSubnet] @hasInverse(field: vpc)
+  eksClusters: [awsEksCluster] @hasInverse(field: vpc)
+  ecsServices: [awsEcsService] @hasInverse(field: vpc)
+  efsMountTargets: [awsEfsMountTarget] @hasInverse(field: vpc)
+  flowLog: [awsFlowLog] @hasInverse(field: vpc)
+  vpnGateways: [awsVpnGateway] @hasInverse(field: vpc)
+  transitGatewayAttachments: [awsTransitGatewayAttachment] @hasInverse(field: vpc)
+  elastiCacheCluster: [awsElastiCacheCluster] @hasInverse(field: vpc)
+  codebuilds: [awsCodebuild] @hasInverse(field: vpc)
+  elasticSearchDomains: [awsElasticSearchDomain] @hasInverse(field: vpc)
+  dmsReplicationInstances: [awsDmsReplicationInstance] @hasInverse(field: vpc)
+  rdsClusterSnapshots: [awsRdsClusterSnapshot] @hasInverse(field: vpc)
+  vpcPeeringConnection: [awsVpcPeeringConnection] @hasInverse(field: vpc)
+  vpcEndpoints: [awsVpcEndpoint] @hasInverse(field: vpc)
+}

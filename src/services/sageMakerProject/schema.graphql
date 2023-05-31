@@ -1,0 +1,7 @@
+type awsSageMakerProject implements awsBaseService @key(fields: "arn") {
+  projectName: String @search(by: [hash, regexp])
+  projectArn: String @search(by: [hash, regexp])
+  projectId: String @search(by: [hash, regexp])
+  creationTime: DateTime @search(by: [day])
+  projectStatus: String @search(by: [hash, regexp])
+}

@@ -1,0 +1,13 @@
+type awsSageMakerExperimentExperimentSource {
+  sourceArn: String @search(by: [hash, regexp])
+  sourceType: String @search(by: [hash, regexp])
+}
+
+type awsSageMakerExperiment implements awsBaseService @key(fields: "arn") {
+  experimentArn: String @search(by: [hash, regexp])
+  experimentName: String @search(by: [hash, regexp])
+  displayName: String @search(by: [hash, regexp])
+  experimentSource: awsSageMakerExperimentExperimentSource
+  creationTime: DateTime @search(by: [day])
+  lastModifiedTime: DateTime @search(by: [day])
+}

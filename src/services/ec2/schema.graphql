@@ -1,0 +1,122 @@
+type awsEc2MetadataOptions
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  state: String!
+  httpTokens: String!
+  httpPutResponseHopLimit: Int
+  httpEndpoint: String!
+}
+
+type blockDeviceEbs
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  attachTime: String!
+  deleteOnTermination: Boolean!
+  status: String!
+  volumeId: String! @id
+}
+
+type awsEc2Blockdevice
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  deviceName: String! @id
+  ebs: blockDeviceEbs
+}
+
+type awsEc2CloudWatchMetricsTimePeriods
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  last6Hours: awsEc2CloudWatchMetrics
+  last24Hours: awsEc2CloudWatchMetrics
+  lastWeek: awsEc2CloudWatchMetrics
+  lastMonth: awsEc2CloudWatchMetrics
+}
+
+type awsEc2CloudWatchMetrics
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  cpuUtilizationAverage: Float
+  networkInAverage: Float
+  networkOutAverage: Float
+  networkPacketsInAverage: Float
+  networkPacketsOutAverage: Float
+  statusCheckFailedSum: Float
+  statusCheckFailedInstanceSum: Float
+  statusCheckFailedSystemSum: Float
+  diskReadOpsAverage: Float
+  diskWriteOpsAverage: Float
+  diskReadBytesAverage: Float
+  diskWriteBytesAverage: Float
+}
+
+type awsEc2KeyPair {
+  id: String @search(by: [hash, regexp])
+  fingerprint: String @search(by: [hash, regexp])
+  name: String @search(by: [hash, regexp])
+  type: String @search(by: [hash, regexp])
+  tags: [awsRawTag]
+}
+
+type awsEc2 implements awsBaseService @key(fields: "arn") {
+  ami: String @search(by: [hash, regexp])
+  tenancy: String @search(by: [hash, regexp])
+  elasticIps: String @search(by: [hash, regexp])
+  publicDns: String @search(by: [hash, regexp])
+  privateDns: String @search(by: [hash, regexp])
+  monitoring: String @search(by: [hash, regexp])
+  privateIps: String @search(by: [hash, regexp])
+  keyPair: awsEc2KeyPair
+  cpuCoreCount: Int @search
+  hibernation: String @search(by: [hash, regexp])
+  ebsOptimized: String @search(by: [hash, regexp])
+  ipv4PublicIp: String @search(by: [hash, regexp])
+  instanceType: String @search(by: [hash, regexp])
+  ipv6Addresses: [String] @search(by: [hash, regexp])
+  placementGroup: String @search(by: [hash, regexp])
+  instanceState: String @search(by: [hash, regexp])
+  sourceDestCheck: String @search(by: [hash, regexp])
+  availabilityZone: String @search(by: [hash, regexp])
+  cpuThreadsPerCore: Int @search
+  deletionProtection: String @search(by: [hash, regexp])
+  dailyCost: awsTotalBillingInfo
+  primaryNetworkInterface: String @search(by: [hash, regexp])
+  metadataOptions: awsEc2MetadataOptions
+  metadatasecurityGroupIdsOptions: [String] @search(by: [hash])
+  securityGroupIds: [String] @search(by: [hash])
+  ephemeralBlockDevices: [awsEc2Blockdevice]
+  publicIpAddress: String @search(by: [hash, regexp])
+  platformDetails: String @search(by: [hash, regexp])
+  cloudWatchMetricData: awsEc2CloudWatchMetricsTimePeriods
+  instanceLifecycle: String @search(by: [hash, regexp])
+  launchTime: DateTime @search(by: [day])
+  tags: [awsRawTag]
+  alb: [awsAlb] @hasInverse(field: ec2Instance)
+  asg: [awsAsg] @hasInverse(field: ec2Instance)
+  ebs: [awsEbs] @hasInverse(field: ec2Instance)
+  ecsContainer: [awsEcsContainer] @hasInverse(field: ec2Instances)
+  eip: [awsEip] @hasInverse(field: ec2Instance)
+  eksCluster: [awsEksCluster] @hasInverse(field: ec2Instances)
+  elasticBeanstalkEnv: [awsElasticBeanstalkEnv] @hasInverse(field: ec2Instances)
+  emrInstance: [awsEmrInstance] @hasInverse(field: ec2Instance)
+  iamInstanceProfile: [awsIamInstanceProfile] @hasInverse(field: ec2Instances)
+  iamRole: [awsIamRole] @hasInverse(field: ec2Instances)
+  networkInterfaces: [awsNetworkInterface] @hasInverse(field: ec2Instance)
+  securityGroups: [awsSecurityGroup] @hasInverse(field: ec2Instance)
+  subnets: [awsSubnet] @hasInverse(field: ec2Instances)
+  systemsManagerInstance: [awsSystemsManagerInstance] @hasInverse(field: ec2Instance)
+}

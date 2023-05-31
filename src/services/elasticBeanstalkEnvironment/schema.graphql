@@ -1,0 +1,34 @@
+type awsElasticBeanstalkEnv implements awsBaseService @key(fields: "arn") {
+  applicationName: String @search(by: [hash, regexp])
+  cname: String @search(by: [hash])
+  description: String @search(by: [hash, regexp])
+  endpointUrl: String @search(by: [hash, regexp])
+  name: String @search(by: [hash, regexp])
+  platformArn: String @search(by: [hash])
+  resources: [awsElasticBeanstalkEnvResource]
+  settings: [awsElasticBeanstalkEnvSetting]
+  solutionStackName: String @search(by: [hash, regexp])
+  tier: String @search(by: [hash])
+  versionLabel: String @search(by: [hash, regexp])
+  asgs: [awsAsg] @hasInverse(field: elasticBeanstalkEnvs)
+  albs: [awsAlb] @hasInverse(field: elasticBeanstalkEnvs)
+  ec2Instances: [awsEc2] @hasInverse(field: elasticBeanstalkEnv)
+  elbs: [awsElb] @hasInverse(field: elasticBeanstalkEnvs)
+  elasticBeanstalkApp: [awsElasticBeanstalkApp] @hasInverse(field: elasticBeanstalkEnvs)
+  iamRole: [awsIamRole] @hasInverse(field: elasticBeanstalkEnvs)
+  sqsQueues: [awsSqs] @hasInverse(field: elasticBeanstalkEnvs)
+  tags: [awsRawTag]
+}
+
+type awsElasticBeanstalkEnvSetting {
+  id: String! @id @search(by: [hash])
+  optionName: String @search(by: [hash])
+  value: String @search(by: [hash, regexp])
+  namespace: String @search(by: [hash, regexp])
+}
+
+type awsElasticBeanstalkEnvResource {
+  id: String! @id @search(by: [hash])
+  name: String @search(by: [hash, regexp])
+  value: [String] @search(by: [hash, regexp])
+}

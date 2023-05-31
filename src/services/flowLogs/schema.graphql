@@ -1,0 +1,28 @@
+type awsFlowLog implements awsBaseService @key(fields: "arn") {
+  creationTime: String @search(by: [hash, regexp])
+  deliverLogsErrorMessage: String @search(by: [hash, regexp, fulltext])
+  deliverLogsPermissionArn: String @search(by: [hash, regexp])
+  deliverLogsStatus: String @search(by: [hash, regexp])
+  logStatus: String @search(by: [hash, regexp])
+  groupName: String @search(by: [hash, regexp, fulltext])
+  resourceId: String @search(by: [hash, regexp])
+  trafficType: String @search(by: [hash, regexp])
+  destinationType: String @search(by: [hash, regexp])
+  destination: String @search(by: [hash, regexp])
+  format: String @search(by: [hash, regexp, fulltext])
+  maxAggregationInterval: Int @search
+  tags: [awsRawTag]
+  vpc: [awsVpc] @hasInverse(field: flowLog)
+  iamRole: [awsIamRole] @hasInverse(field: flowLogs)
+  networkInterface: [awsNetworkInterface] @hasInverse(field: flowLogs) #change to plural
+  subnet: [awsSubnet] @hasInverse(field: flowLogs) #change to plural
+  # destinationOptions: awsDestinationOptions Cant find in the aws SDK flow log type but is in docs, investigate later
+}
+
+# TODO: add arn like so arn:aws:ec2:region:account_id:vpc-flow-log/flow-log-id
+
+# type awsDestinationOptions {
+#   fileFormat: String
+#   hiveCompatiblePartitions: Boolean
+#   perHourPartition: Boolean
+# }

@@ -1,0 +1,22 @@
+type awsRouteTable implements awsBaseService @key(fields: "arn") {
+  vpcId: String @search(by: [hash])
+  routes: [awsRoute]
+  mainRouteTable: Boolean @search
+  explicitlyAssociatedWithSubnets: Int @search
+  subnetAssociations: [String]
+  tags: [awsRawTag]
+  subnet: [awsSubnet] @hasInverse(field: routeTable) #change to plural
+  vpc: [awsVpc] @hasInverse(field: routeTables)
+  vpcEndpoints: [awsVpcEndpoint] @hasInverse(field: routeTables)
+}
+
+type awsRoute
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: ID
+  target: String!
+  destination: String
+}

@@ -1,0 +1,24 @@
+type awsRoute53Record implements awsOptionalService @key(fields: "id") {
+  zoneId: String @search(by: [hash])
+  alias: awsRoute53Alias
+  name: String @search(by: [hash, regexp])
+  setIdentifier: String @search(by: [hash, regexp])
+  type: String @search(by: [hash, regexp])
+  ttl: Int @search
+  records: [String] @search(by: [hash, regexp])
+  route53HostedZone: [awsRoute53HostedZone] @hasInverse(field: route53Record)
+  elb: [awsElb] @hasInverse(field: route53Record)
+  alb: [awsAlb] @hasInverse(field: route53Record)
+  restApi: [awsApiGatewayRestApi] @hasInverse(field: route53Record)
+}
+
+type awsRoute53Alias
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  zoneId: String!
+  name: String
+  evaluateTargetHealth: Boolean
+}

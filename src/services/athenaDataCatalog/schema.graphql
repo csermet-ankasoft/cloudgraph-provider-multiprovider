@@ -1,0 +1,30 @@
+type awsAthenaDataCatalog implements awsBaseService @key(fields: "arn") {
+  catalogName: String! @search(by: [hash, regexp])
+  type: String @search(by: [hash, regexp])
+  databases: [awsAthenaDatabase]
+}
+
+type awsAthenaDatabase {
+  id: String! @id
+  name: String @search(by: [hash, regexp])
+  description: String @search(by: [hash, regexp])
+  parameters: [awsRawTag]
+  metadata: awsAthenaMetadata
+}
+
+type awsAthenaMetadata {
+  name: String @search(by: [hash, regexp])
+  createTime: DateTime
+  lastAccessTime: DateTime
+  tableType: String @search(by: [hash, regexp])
+  columns: [awsAthenaMetadataColumn]
+  partitionKeys: [awsAthenaMetadataColumn]
+  parameters: [awsRawTag]
+}
+
+type awsAthenaMetadataColumn {
+  id: String! @id
+  name: String @search(by: [hash, regexp])
+  type: String @search(by: [hash, regexp])
+  comment: String @search(by: [hash, regexp])
+}

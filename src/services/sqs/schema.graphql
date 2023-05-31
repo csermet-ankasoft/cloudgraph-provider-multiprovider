@@ -1,0 +1,24 @@
+type awsSqs implements awsBaseService @key(fields: "arn") {
+  queueUrl: String @search(by: [hash, regexp, fulltext])
+  queueType: String @search(by: [hash, regexp, fulltext])
+  approximateNumberOfMessages: Int @search
+  approximateNumberOfMessagesNotVisible: Int @search
+  approximateNumberOfMessagesDelayed: Int @search
+  visibilityTimeout: String @search(by: [hash, regexp])
+  maximumMessageSize: Int @search
+  messageRetentionPeriod: String @search(by: [hash, regexp])
+  delaySeconds: String @search(by: [hash, regexp])
+  rawPolicy: String @search(by: [hash, regexp])
+  policy: awsIamJSONPolicy
+  receiveMessageWaitTimeSeconds: String @search(by: [hash, regexp])
+  kmsMasterKeyId: String @search(by: [hash, regexp])
+  kmsDataKeyReusePeriodSeconds: String @search(by: [hash, regexp])
+  sqsManagedSseEnabled: Boolean @search
+  fifoQueue: Boolean @search
+  deduplicationScope: String @search(by: [hash, regexp])
+  fifoThroughputLimit: String @search(by: [hash, regexp])
+  contentBasedDeduplication: Boolean @search
+  elasticBeanstalkEnvs: [awsElasticBeanstalkEnv] @hasInverse(field: sqsQueues)
+  tags: [awsRawTag]
+  s3: [awsS3] @hasInverse(field: sqs)
+}

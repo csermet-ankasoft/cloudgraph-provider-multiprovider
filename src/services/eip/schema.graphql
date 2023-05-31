@@ -1,0 +1,18 @@
+type awsEip implements awsBaseService @key(fields: "arn") {
+  tags: [awsRawTag]
+  isVpc: String @search(by: [hash])
+  domain: String @search(by: [hash, regexp])
+  publicIp: String @search(by: [hash, regexp])
+  privateIp: String @search(by: [hash, regexp])
+  instanceId: String @search(by: [hash])
+  publicIpv4Pool: String @search(by: [hash, regexp])
+  networkInterfaceId: String @search(by: [hash, regexp])
+  ec2InstanceAssociationId: String @search(by: [hash])
+  networkInterfaceOwnerId: String @search(by: [hash])
+  networkBorderGroup: String @search(by: [hash, regexp])
+  customerOwnedIp: String @search(by: [hash])
+  customerOwnedIpv4Pool: String @search(by: [hash, regexp])
+  vpc: [awsVpc] @hasInverse(field: eips)
+  ec2Instance: [awsEc2] @hasInverse(field: eip)
+  networkInterface: [awsNetworkInterface] @hasInverse(field: eip)
+}

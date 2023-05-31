@@ -1,0 +1,37 @@
+type awsNetworkInterface implements awsBaseService @key(fields: "arn") {
+  subnetId: String @search(by: [hash])
+  macAddress: String @search(by: [hash, regexp])
+  description: String @search(by: [hash, regexp, fulltext])
+  availabilityZone: String @search(by: [hash, regexp])
+  status: String @search(by: [hash, regexp])
+  vpcId: String @search(by: [hash])
+  interfaceType: String @search(by: [hash, regexp])
+  securityGroupsIds: [String] @search(by: [hash])
+  privateDnsName: String @search(by: [hash, regexp])
+  privateIps: [String] @search(by: [hash, regexp])
+  attachment: awsNetworkInterfaceAttachment
+  tags: [awsRawTag]
+  ec2Instance: [awsEc2] @hasInverse(field: networkInterfaces)
+  eip: [awsEip] @hasInverse(field: networkInterface)
+  natGateway: [awsNatGateway] @hasInverse(field: networkInterface)
+  subnet: [awsSubnet] @hasInverse(field: networkInterface)
+  vpc: [awsVpc] @hasInverse(field: networkInterfaces)
+  efsMountTarget: [awsEfsMountTarget] @hasInverse(field: networkInterface)
+  flowLogs: [awsFlowLog] @hasInverse(field: networkInterface) #change to singular
+  sageMakerNotebookInstances: [awsSageMakerNotebookInstance]
+    @hasInverse(field: networkInterface)
+  securityGroups: [awsSecurityGroup] @hasInverse(field: networkInterfaces)
+  vpcEndpoint: [awsVpcEndpoint] @hasInverse(field: networkInterfaces)
+}
+
+type awsNetworkInterfaceAttachment
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: ID
+  attachmentId: String
+  deleteOnTermination: Boolean
+  status: String
+}

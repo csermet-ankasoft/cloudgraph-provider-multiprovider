@@ -1,0 +1,17 @@
+type awsIotThingAttribute implements awsBaseService @key(fields: "arn") {
+  thingName: String
+  thingTypeName: String
+  attributes: [awsIotAttribute]
+  version: Int
+}
+
+type awsIotAttribute
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id @search(by: [hash])
+  key: String @search(by: [hash, regexp])
+  value: String @search(by: [hash, regexp])
+}

@@ -1,0 +1,7 @@
+type awsIamGroup implements awsBaseService @key(fields: "id") {
+  path: String @search(by: [hash, regexp])
+  name: String @search(by: [hash, regexp])
+  inlinePolicies: [String]
+  iamAttachedPolicies: [awsIamPolicy] @hasInverse(field: iamGroups)
+  iamUsers: [awsIamUser] @hasInverse(field: iamGroups)
+}

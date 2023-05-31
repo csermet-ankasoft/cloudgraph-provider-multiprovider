@@ -1,0 +1,90 @@
+#change to plural for ALL SERVICE FIELDS
+type awsTag @key(fields: "id") {
+  id: String! @id @search(by: [hash])
+  key: String! @search(by: [hash, regexp])
+  value: String! @search(by: [hash, regexp])
+  alb: [awsAlb] #change to plural
+  asg: [awsAsg] #change to plural
+  cloudwatch: [awsCloudwatch] #change to plural
+  cloudfront: [awsCloudfront] #change to plural
+  codebuilds: [awsCodebuild]
+  ebs: [awsEbs]
+  eip: [awsEip]
+  elb: [awsElb]
+  igw: [awsIgw]
+  kms: [awsKms]
+  lambda: [awsLambda]
+  natGateway: [awsNatGateway]
+  networkInterface: [awsNetworkInterface]
+  securityGroups: [awsSecurityGroup]
+  vpc: [awsVpc]
+  ec2Instance: [awsEc2]
+  sqs: [awsSqs]
+  routeTable: [awsRouteTable]
+  s3: [awsS3]
+  cognitoIdentityPool: [awsCognitoIdentityPool]
+  cognitoUserPool: [awsCognitoUserPool]
+  kinesisFirehose: [awsKinesisFirehose]
+  appSync: [awsAppSync]
+  cloudtrail: [awsCloudtrail]
+  cloudFormationStack: [awsCloudFormationStack]
+  cloudFormationStackSet: [awsCloudFormationStackSet]
+  dynamodb: [awsDynamoDbTable]
+  nacl: [awsNetworkAcl]
+  ecr: [awsEcr]
+  subnet: [awsSubnet]
+  secretsManager: [awsSecretsManager]
+  iamAccessAnalyzers: [awsIamAccessAnalyzer]
+  iamUsers: [awsIamUser]
+  iamRoles: [awsIamRole]
+  iamPolicies: [awsIamPolicy]
+  iamInstanceProfiles: [awsIamInstanceProfile]
+  rdsCluster: [awsRdsCluster]
+  rdsClusterSnapshot: [awsRdsClusterSnapshot]
+  rdsDbInstance: [awsRdsDbInstance]
+  elasticBeanstalkApp: [awsElasticBeanstalkApp]
+  elasticBeanstalkEnv: [awsElasticBeanstalkEnv]
+  sns: [awsSns]
+  redshiftClusters: [awsRedshiftCluster]
+  eksCluster: [awsEksCluster]
+  ecsCluster: [awsEcsCluster]
+  ecsContainer: [awsEcsContainer]
+  ecsService: [awsEcsService]
+  ecsTask: [awsEcsTask]
+  apiGatewayDomainName: [awsApiGatewayDomainName]
+  apiGatewayHttpApi: [awsApiGatewayHttpApi]
+  apiGatewayRestApi: [awsApiGatewayRestApi]
+  apiGatewayStage: [awsApiGatewayStage]
+  elastiCacheCluster: [awsElastiCacheCluster]
+  elastiCacheReplicationGroup: [awsElastiCacheReplicationGroup]
+  cloud9Environment: [awsCloud9Environment]
+  efs: [awsEfs]
+  flowLogs: [awsFlowLog]
+  emrCluster: [awsEmrCluster]
+  customerGateway: [awsCustomerGateway]
+  transitGateway: [awsTransitGateway]
+  transitGatewayAttachment: [awsTransitGatewayAttachment]
+  transitGatewayRouteTables: [awsTransitGatewayRouteTable]
+  vpnGateway: [awsVpnGateway]
+  clientVpnEndpoint: [awsClientVpnEndpoint]
+  vpnConnection: [awsVpnConnection]
+  managedAirflows: [awsManagedAirflow]
+  guardDutyDetectors: [awsGuardDutyDetector]
+  elasticSearchDomains: [awsElasticSearchDomain]
+  dmsReplicationInstances: [awsDmsReplicationInstance]
+  systemsManagerDocuments: [awsSystemsManagerDocument]
+  managedPrefixLists: [awsManagedPrefixList]
+  vpcPeeringConnections: [awsVpcPeeringConnection]
+  vpcEndpoints: [awsVpcEndpoint]
+}
+
+type awsRawTag
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id @search(by: [hash, regexp])
+  key: String @search(by: [hash, regexp])
+  value: String @search(by: [hash, regexp])
+}

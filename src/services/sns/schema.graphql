@@ -1,0 +1,25 @@
+type awsSns implements awsBaseService @key(fields: "arn") {
+  tags: [awsRawTag]
+  rawPolicy: String @search(by: [hash, regexp])
+  policy: awsIamJSONPolicy
+  displayName: String @search(by: [hash, regexp])
+  deliveryPolicy: String @search(by: [hash, regexp])
+  subscriptions: [awsSnsSubscription]
+  cloudtrail: [awsCloudtrail] @hasInverse(field: sns)
+  kms: [awsKms] @hasInverse(field: sns)
+  cloudwatch: [awsCloudwatch] @hasInverse(field: sns)
+  cloudFormationStack: [awsCloudFormationStack] @hasInverse(field: sns)
+  s3: [awsS3] @hasInverse(field: sns)
+}
+
+type awsSnsSubscription
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id
+  arn: String @search(by: [hash, regexp])
+  endpoint: String @search(by: [hash, regexp])
+  protocol: String @search(by: [hash, regexp])
+}

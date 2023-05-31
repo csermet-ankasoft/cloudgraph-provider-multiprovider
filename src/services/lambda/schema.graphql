@@ -1,0 +1,45 @@
+type awsLambda implements awsBaseService @key(fields: "arn") {
+  description: String @search(by: [hash, regexp, fulltext])
+  handler: String @search(by: [hash, regexp])
+  kmsKeyArn: String @search(by: [hash, regexp])
+  lastModified: String @search(by: [hash, regexp])
+  memorySize: Int @search
+  reservedConcurrentExecutions: Int @search
+  runtime: String @search(by: [hash, regexp])
+  sourceCodeSize: String @search(by: [hash, regexp])
+  timeout: Int @search
+  tracingConfig: String @search(by: [hash, regexp])
+  version: String @search(by: [hash, regexp])
+  environmentVariables: [awsLambdaEnvironmentVariable]
+  vpcConfig: awsLambdaVpcConfig
+  policyRevisionId: String @search(by: [hash, regexp])
+  rawPolicy: String @search(by: [hash, regexp])
+  policy: awsIamJSONPolicy
+  tags: [awsRawTag]
+  kms: [awsKms] @hasInverse(field: lambda)
+  securityGroups: [awsSecurityGroup] @hasInverse(field: lambda)
+  subnet: [awsSubnet] @hasInverse(field: lambda) #change to plural
+  vpc: [awsVpc] @hasInverse(field: lambdas)
+  cognitoUserPools: [awsCognitoUserPool] @hasInverse(field: lambdas)
+  appSync: [awsAppSync] @hasInverse(field: lambda)
+  s3: [awsS3] @hasInverse(field: lambdas)
+  secretsManager: [awsSecretsManager] @hasInverse(field: lambda)
+  iamRole: [awsIamRole] @hasInverse(field: lambda)
+}
+
+type awsLambdaEnvironmentVariable
+  @generate(
+    query: { get: false, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id
+  key: String!
+  value: String
+}
+
+type awsLambdaVpcConfig {
+  vpcId: String @search(by: [hash, regexp])
+  subnetIds: [String] @search(by: [hash, regexp])
+  securityGroupIds: [String] @search(by: [hash, regexp])
+}

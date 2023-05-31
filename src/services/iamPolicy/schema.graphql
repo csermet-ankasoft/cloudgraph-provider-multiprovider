@@ -1,0 +1,63 @@
+type awsIamPolicy implements awsBaseService @key(fields: "id") {
+  name: String @search(by: [hash, regexp])
+  path: String @search(by: [hash, regexp])
+  description: String @search(by: [hash, regexp])
+  rawPolicy: String @search(by: [hash, regexp])
+  policyContent: awsIamJSONPolicy
+  tags: [awsRawTag]
+  iamRoles: [awsIamRole] @hasInverse(field: iamAttachedPolicies)
+  iamGroups: [awsIamGroup] @hasInverse(field: iamAttachedPolicies)
+  iamUsers: [awsIamUser] @hasInverse(field: iamAttachedPolicies)
+  permissionBoundaryOf: [awsIamRole] @hasInverse(field: iamPermissionBoundaryPolicy)
+}
+
+type awsIamJSONPolicy
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: String! @id @search(by: [hash])
+  version: String @search(by: [hash, regexp])
+  statement: [awsIamJSONPolicyStatement]
+}
+
+type awsIamJSONPolicyStatement
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: ID
+  action: [String] @search(by: [hash])
+  condition: [awsIamJSONPolicyCondition]
+  effect: String @search(by: [hash, regexp])
+  principal: [awsIamJSONPolicyPrincipal]
+  resource: [String] @search(by: [hash])
+  notAction: [String] @search(by: [hash])
+  notPrincipal: [awsIamJSONPolicyPrincipal]
+  notResource: [String] @search(by: [hash])
+}
+
+type awsIamJSONPolicyCondition
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: ID
+  operator: String @search(by: [hash, regexp])
+  key: String @search(by: [hash, regexp])
+  value: [String] @search(by: [hash])
+}
+
+type awsIamJSONPolicyPrincipal
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  id: ID
+  key: String @search(by: [hash, regexp])
+  value: [String] @search(by: [hash])
+}

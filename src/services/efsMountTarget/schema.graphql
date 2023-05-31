@@ -1,0 +1,14 @@
+type awsEfsMountTarget implements awsOptionalService @key(fields: "id") {
+  ownerId: String @search(by: [hash])
+  fileSystemId: String @search(by: [hash])
+  lifeCycleState: String @search(by: [hash, regexp])
+  ipAddress: String @search(by: [hash, regexp])
+  availabilityZoneId: String @search(by: [hash])
+  availabilityZoneName: String @search(by: [hash, regexp])
+  efs: [awsEfs] @hasInverse(field: efsMountTarget)
+  networkInterface: [awsNetworkInterface] @hasInverse(field: efsMountTarget) #change to plural
+  subnet: [awsSubnet] @hasInverse(field: efsMountTarget) #change to plural
+  vpc: [awsVpc] @hasInverse(field: efsMountTargets)
+}
+
+# TODO: add an arn if possible

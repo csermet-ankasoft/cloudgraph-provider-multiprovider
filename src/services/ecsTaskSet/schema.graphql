@@ -1,0 +1,23 @@
+type awsEcsTaskSet implements awsBaseService @key(fields: "arn") {
+  startedBy: String @search(by: [hash, regexp])
+  externalId: String @search(by: [hash, regexp])
+  status: String @search(by: [hash, regexp])
+  computedDesiredCount: Int @search
+  pendingCount: Int @search
+  runningCount: Int @search
+  createdAt: String @search(by: [hash, regexp])
+  updatedAt: String @search(by: [hash, regexp])
+  launchType: String @search(by: [hash, regexp])
+  capacityProviderStrategy: [awsEcsCapacityProviderStrategyItem]
+  platformVersion: String @search(by: [hash, regexp])
+  networkConfiguration: awsEcsNetworkConfiguration
+  loadBalancers: [awsEcsLoadBalancer]
+  serviceRegistries: [awsEcsServiceRegistry]
+  scale: awsEcsScale
+  stabilityStatus: String @search(by: [hash, regexp])
+  stabilityStatusAt: String @search(by: [hash, regexp])
+  tags: [awsRawTag]
+  ecsService: [awsEcsService] @hasInverse(field: ecsTaskSet)
+  ecsCluster: [awsEcsCluster] @hasInverse(field: ecsTaskSet)
+  ecsTaskDefinition: [awsEcsTaskDefinition] @hasInverse(field: ecsTaskSet)
+}

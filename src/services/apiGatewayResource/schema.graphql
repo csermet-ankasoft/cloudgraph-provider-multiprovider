@@ -1,0 +1,14 @@
+type awsApiGatewayMethod @key(fields: "arn") {
+  accountId: String! @search(by: [hash])
+  arn: String! @id @search(by: [hash, regexp])
+  httpMethod: String @search(by: [hash])
+  authorization: String @search(by: [hash, regexp])
+  apiKeyRequired: Boolean @search
+}
+
+type awsApiGatewayResource implements awsBaseService @key(fields: "arn") {
+  restApiId: String @search(by: [hash, regexp])
+  restApi: [awsApiGatewayRestApi] @hasInverse(field: resources) #change to plural
+  path: String @search(by: [hash, regexp])
+  methods: [awsApiGatewayMethod]
+}

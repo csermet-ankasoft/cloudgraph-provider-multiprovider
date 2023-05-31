@@ -1,0 +1,59 @@
+type awsAlb implements awsBaseService @key(fields: "arn") {
+  name: String @search(by: [hash, regexp])
+  dnsName: String @search(by: [hash, regexp])
+  scheme: String @search(by: [hash, regexp])
+  type: String @search(by: [hash, regexp])
+  subnets: [String] @search(by: [hash])
+  hostedZone: String @search(by: [hash])
+  defaultVpc: String @search(by: [hash])
+  ipAddressType: String @search(by: [hash])
+  idleTimeout: String @search(by: [hash, regexp])
+  deletionProtection: String @search(by: [hash])
+  http2: String @search(by: [hash])
+  accessLogsEnabled: String @search(by: [hash])
+  dropInvalidHeaderFields: String @search(by: [hash])
+  createdAt: String @search(by: [hash, regexp])
+  status: String @search(by: [hash])
+  tags: [awsRawTag]
+  securityGroups: [awsSecurityGroup] @hasInverse(field: alb)
+  ec2Instance: [awsEc2] @hasInverse(field: alb) #change to plural
+  vpc: [awsVpc] @hasInverse(field: albs)
+  route53Record: [awsRoute53Record] @hasInverse(field: alb) #change to plural
+  listeners: [awsAlbListener]
+  subnet: [awsSubnet] @hasInverse(field: alb) #change to plural
+  elasticBeanstalkEnvs: [awsElasticBeanstalkEnv] @hasInverse(field: albs)
+  webAcl: [awsWafV2WebAcl] @hasInverse(field: albs)
+}
+
+type awsAlbListener
+  @generate(
+    query: { get: true, query: true, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  arn: String! @id @search(by: [hash, regexp])
+  settings: awsAlbListenerSettings
+}
+
+type awsAlbListenerSettings
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  sslPolicy: String @search(by: [hash, regexp])
+  protocol: String @search(by: [hash, regexp])
+  rules: [awsAlbListenerRule]
+}
+
+type awsAlbListenerRule
+  @generate(
+    query: { get: false, query: false, aggregate: false }
+    mutation: { add: false, delete: false }
+    subscription: false
+  ) {
+  type: String @search(by: [hash, regexp])
+  order: String @search(by: [hash, regexp])
+  targetGroupArn: String @search
+  redirectProtocol: String @search(by: [hash, regexp])
+}

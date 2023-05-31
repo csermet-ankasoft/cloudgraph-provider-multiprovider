@@ -1,0 +1,7 @@
+type awsIamServerCertificate implements awsOptionalService @key(fields: "id") {
+  certificateId: String @search(by: [hash, regexp])
+  name: String @search(by: [hash, regexp])
+  path: String @search(by: [hash, regexp])
+  uploadDate: String @search(by: [hash, regexp])
+  expiration: String @search(by: [hash, regexp])
+}
