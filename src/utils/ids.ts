@@ -24,7 +24,7 @@ export const getRecordId = ({
     : `${hostedZoneId}_${name}_${type}`
 
 export const gets3BucketId = (id: string): string =>
-  `${id}-${kebabCase(resources.acm)}`
+  `${id}-${kebabCase(resources.s3Bucket)}`
 
 export const getIamId = ({
   resourceId,

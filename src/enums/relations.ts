@@ -9,5 +9,5 @@ export default {
   emrCluster: ['emrInstance', 'emrStep'],
   ecsService: ['ecsTaskSet', 'ecsTaskDefinition'],
   iamInstanceProfile: ['ec2Instance'],
-  apiGatewayDomainName: ['apiGatewayRestApi']
+  apiGatewayDomainName: ['apiGatewayRestApi'],
 }

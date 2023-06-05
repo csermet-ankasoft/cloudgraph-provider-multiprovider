@@ -68,7 +68,7 @@ export default ({
       }) => {
         return {
           id: `${loadBalancerName}-${Protocol}-${LoadBalancerPort}-${kebabCase(
-            resources.acm
+            resources.elbListener
           )}`,
           name: `${Protocol}-${LoadBalancerPort} ${t.listener}`,
           loadBalancerPort: LoadBalancerPort,

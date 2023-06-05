@@ -606,7 +606,7 @@ export default class Provider extends CloudGraph.Client {
             accountId,
             data,
           })
-          this.logger.success(`${resource} scan completed test`)
+          this.logger.success(`${resource} scan completed`)
         } catch (error: any) {
           this.logger.error(
             `There was an error scanning AWS sdk data for ${resource} resource`
